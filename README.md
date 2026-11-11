@@ -69,5 +69,7 @@ Just open `index.html` in your browser. No build step is needed.
 ## Contact
 
 - Email: auranova597@gmail.com
+- Instagram: https://www.instagram.com/auranova597/
+- Facebook: https://www.facebook.com/profile.php?id=61596176802761
 
 © 2026 AuraNova Digital. All rights reserved.
