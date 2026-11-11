@@ -158,7 +158,6 @@
 <input type="hidden" name="_subject" value="New inquiry from AuraNova Digital site">
 <input type="hidden" name="_template" value="table">
 <input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="https://laibapafaftab-debug.github.io/auranova-digital/?sent=true#contact">
 <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 <div class="grid sm:grid-cols-2 gap-6">
 <div><label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Full Name</label><input type="text" name="Name" required placeholder="Your name" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-cyan-500 transition"></div>
@@ -178,6 +177,8 @@
 <div class="flex gap-5 text-slate-500">
 <a href="https://www.linkedin.com/in/laiba-aftab-211705420/" target="_blank" rel="noopener" class="hover:text-cyan-400 transition"><i class="fa-brands fa-linkedin text-lg"></i></a>
 <a href="https://github.com/laibapafaftab-debug" target="_blank" rel="noopener" class="hover:text-cyan-400 transition"><i class="fa-brands fa-github text-lg"></i></a>
+<a href="https://www.instagram.com/auranova597/" target="_blank" rel="noopener" aria-label="Instagram" class="hover:text-cyan-400 transition"><i class="fa-brands fa-instagram text-lg"></i></a>
+<a href="https://www.facebook.com/profile.php?id=61596176802761" target="_blank" rel="noopener" aria-label="Facebook" class="hover:text-cyan-400 transition"><i class="fa-brands fa-facebook text-lg"></i></a>
 <a href="mailto:laibapafaftab@gmail.com" class="hover:text-cyan-400 transition"><i class="fa-solid fa-envelope text-lg"></i></a></div></div>
 <p class="text-center text-xs text-slate-600 mt-8">© 2026 AuraNova Digital. All rights reserved.</p>
 </footer>
@@ -187,15 +188,28 @@ const menuBtn=document.getElementById("menu-btn"),mobileMenu=document.getElement
 menuBtn.addEventListener("click",()=>mobileMenu.classList.toggle("hidden"));
 document.querySelectorAll(".mobile-link").forEach(l=>l.addEventListener("click",()=>mobileMenu.classList.add("hidden")));
 
-// Form submit ke baad success message
-if (window.location.search.includes("sent=true")) {
-  const form = document.getElementById("contact-form");
-  const msg = document.createElement("div");
-  msg.className = "mb-8 p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 text-emerald-300 text-center font-semibold";
-  msg.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i>Thank you! Your inquiry has been sent. We will contact you soon.';
-  form.parentNode.insertBefore(msg, form);
-  window.history.replaceState({}, document.title, window.location.pathname + "#contact");
-}
+// Form AJAX se submit hota hai, user website par hi rehta hai
+const form = document.getElementById("contact-form");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = form.querySelector('button[type="submit"]');
+  const oldText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "Sending...";
+  try {
+    const res = await fetch("https://formsubmit.co/ajax/auranova597@gmail.com", {
+      method: "POST",
+      headers: { "Accept": "application/json" },
+      body: new FormData(form)
+    });
+    if (!res.ok) throw new Error("failed");
+    form.innerHTML = '<div class="text-center py-10"><i class="fa-solid fa-circle-check text-5xl text-emerald-400"></i><h3 class="text-2xl font-bold text-white mt-5">Thank you!</h3><p class="text-slate-400 mt-2">Your form has been submitted.</p></div>';
+  } catch (err) {
+    btn.disabled = false;
+    btn.innerHTML = oldText;
+    alert("Something went wrong. Please email us at auranova597@gmail.com");
+  }
+});
 </script>
 </body>
 </html>
